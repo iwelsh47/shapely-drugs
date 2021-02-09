@@ -1,0 +1,6 @@
+[submodule "external/stdx"]
+	path = external/stdx
+	url = https://github.com/iwelsh47/stdx
+[submodule "external/eigen"]
+	path = external/eigen
+	url = https://gitlab.com/libeigen/eigen.git
