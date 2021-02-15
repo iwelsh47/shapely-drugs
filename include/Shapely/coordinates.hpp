@@ -78,7 +78,7 @@ public:
   inline Coordinates GetCoordinates() { return positions.block<Eigen::Dynamic, 3>(0, 0, num_points, 3); }
   inline ConstCoordinates GetCoordinates() const { return positions.block<Eigen::Dynamic, 3>(0, 0, num_points, 3); }
   
-  /** Access the indivdual access set of coordinates. */
+  /** Access the indivdual axis set of coordinates. */
   inline Axis x() { return positions.block<Eigen::Dynamic, 1>(0, 0, num_points, 1); }
   inline Axis y() { return positions.block<Eigen::Dynamic, 1>(0, 1, num_points, 1); }
   inline Axis z() { return positions.block<Eigen::Dynamic, 1>(0, 2, num_points, 1); }
