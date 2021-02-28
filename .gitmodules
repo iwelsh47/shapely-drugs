@@ -4,3 +4,9 @@
 [submodule "external/eigen"]
 	path = external/eigen
 	url = https://gitlab.com/libeigen/eigen.git
+[submodule "external/dynamic_bitset"]
+	path = external/dynamic_bitset
+	url = https://github.com/pinam45/dynamic_bitset
+[submodule "external/cereal"]
+	path = external/cereal
+	url = https://github.com/USCiLab/cereal
