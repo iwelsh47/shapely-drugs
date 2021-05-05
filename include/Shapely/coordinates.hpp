@@ -4,6 +4,7 @@
 #include <Eigen/Eigenvalues>
 #include <cstdint>
 #include <iostream>
+#include <Shapely/serialisation.hpp>
 
 namespace shapely {
 
@@ -11,7 +12,7 @@ namespace shapely {
  *  \details Internally, uses an Eigen::Matrix to store and manipulate the coordinates
  */
 class Cartesian {
-  using Matrix = Eigen::MatrixX3d;
+  using Matrix = Eigen::MatrixX3f;
 public:
   /** Type for interacting with the underlying storage. */
   using Coordinates = typename Matrix::FixedBlockXpr<Eigen::Dynamic, 3>::Type;
@@ -40,13 +41,15 @@ public:
    *  \details Constructs as a copy of another existing Cartesian instance.
    *  \param other the existing instance to copy from.
    */
-  Cartesian(const Cartesian& other);
+  Cartesian(const Cartesian& other) = default;
   
   /** \brief Move constructor.
    *  \details Constructs using move semantics.
    *  \param other the existing instance to construct from
    */
-  Cartesian(Cartesian&& other);
+  Cartesian(Cartesian&& other) = default;
+  Cartesian& operator=(Cartesian&&) = default;
+  Cartesian& operator=(const Cartesian&) = default;
   
   /** Destructor */
   ~Cartesian() { }
@@ -55,9 +58,9 @@ public:
    *  \details Creates a new point with the given coordinate values. If the storage matrix does not have enough space, the reserved space is doubled in size.
    *  \param x,y,z cartesian coordinates of the point to add.
    */
-  Point NewPoint(double x, double y, double z);
-  inline Point NewPoint(const Eigen::RowVector3d& pt) { return NewPoint(pt.x(), pt.y(), pt.z()); }
-  inline Point NewPoint(const Eigen::Vector3d& pt) { return NewPoint(pt.x(), pt.y(), pt.z()); }
+  Point NewPoint(float x, float y, float z);
+  inline Point NewPoint(const Eigen::RowVector3f& pt) { return NewPoint(pt.x(), pt.y(), pt.z()); }
+  inline Point NewPoint(const Eigen::Vector3f& pt) { return NewPoint(pt.x(), pt.y(), pt.z()); }
   
   /** \brief Remove a point from the set.
    *  \details Removes the point at the given index from the set.
@@ -86,6 +89,14 @@ public:
   inline ConstAxis y() const { return positions.block<Eigen::Dynamic, 1>(0, 1, num_points, 1); }
   inline ConstAxis z() const { return positions.block<Eigen::Dynamic, 1>(0, 2, num_points, 1); }
   
+  template <typename Archive>
+  void CEREAL_SAVE_FUNCTION_NAME(Archive& ar, const uint32_t version) const { ar(positions, num_points); }
+  
+  template <typename Archive>
+  void CEREAL_LOAD_FUNCTION_NAME(Archive& ar, const uint32_t version) {
+    ar(positions, num_points);
+  }
+  
 private:
   /** Check if resizing is required and do it if needed. */
   void CheckResize(uint32_t newsize = 0);
@@ -102,26 +113,39 @@ static inline std::ostream& operator<<(std::ostream& os, const Cartesian& coords
 }
 
 /** Translate the points in \p pts by the given vector. Translation is performed by subtraction. */
-Cartesian& TranslateInplace(Cartesian& pts, const Eigen::Vector3d& delta, double scale = 1.0);
-Cartesian Translate(const Cartesian& pts, const Eigen::Vector3d& delta, double scale = 1.0);
-inline Cartesian& TranslateInplace(Cartesian& pts, double dx, double dy, double dz, double scale = 1.0) {
-  return TranslateInplace(pts, Eigen::Vector3d(dx, dy, dz), scale);
+Cartesian& TranslateInplace(Cartesian& pts, const Eigen::Vector3f& delta, float scale = 1.0);
+Cartesian Translate(const Cartesian& pts, const Eigen::Vector3f& delta, float scale = 1.0);
+inline Cartesian& TranslateInplace(Cartesian& pts, float dx, float dy, float dz, float scale = 1.0) {
+  return TranslateInplace(pts, Eigen::Vector3f(dx, dy, dz), scale);
 }
-inline Cartesian Translate(const Cartesian& pts, double dx, double dy, double dz, double scale = 1.0) {
-  return Translate(pts, Eigen::Vector3d(dx, dy, dz), scale);
+inline Cartesian Translate(const Cartesian& pts, float dx, float dy, float dz, float scale = 1.0) {
+  return Translate(pts, Eigen::Vector3f(dx, dy, dz), scale);
 }
 
 /** Centre the coordinates at (0, 0, 0), optionally with weights. */
-Cartesian& CentreInplace(Cartesian& pts, const double* weights = nullptr);
-Cartesian Centre(const Cartesian& pts, const double* weights = nullptr);
+Cartesian& CentreInplace(Cartesian& pts, const float* weights = nullptr);
+Cartesian Centre(const Cartesian& pts, const float* weights = nullptr);
 
 /** Rotate the coordinates with the given rotation matrix. */
-Cartesian& RotateInplace(Cartesian& pts, const Eigen::Matrix3d& rotmat);
-Cartesian Rotate(const Cartesian& pts, const Eigen::Matrix3d& rotmat);
+Cartesian& RotateInplace(Cartesian& pts, const Eigen::Matrix3f& rotmat);
+Cartesian Rotate(const Cartesian& pts, const Eigen::Matrix3f& rotmat);
 
 /** Calculate the rotation matrix to obtain principal axes alignment. */
-Eigen::Matrix3d PrincipalAxesAlignment(const Cartesian& pts, const double* weights = nullptr);
+Eigen::Matrix3f PrincipalAxesAlignment(const Cartesian& pts, const float* weights = nullptr);
 /** Calculate the rotation matrix given an axis and rotation angle. Angle in radians*/
-Eigen::Matrix3d RotationMatrix(const Eigen::Vector3d& axis, double angle);
+Eigen::Matrix3f RotationMatrix(const Eigen::Vector3f& axis, float angle);
+
+struct CartesianLimits {
+  float min_x, min_y, min_z, max_x, max_y, max_z;
+
+  inline float MaxAbs() const {
+    std::vector<float> vals{std::abs(min_x), std::abs(max_x),
+                             std::abs(min_y), std::abs(max_y),
+                             std::abs(min_z), std::abs(max_z)};
+    return *std::max_element(vals.begin(), vals.end());
+  }
+};
+CartesianLimits Limits(const Cartesian& pts, const float* weights = nullptr);
 
 }
+CEREAL_CLASS_VERSION(shapely::Cartesian, 1);

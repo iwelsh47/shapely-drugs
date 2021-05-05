@@ -1,0 +1,22 @@
+No ES:
+
+Results of "2-Chloromphethamine.isaq":
+ 6:      29282 (  2,   0,   0)  27.18000031
+Results of "2-Fluroamphethamine.isaq":
+ 6:      29282 (  2,   0,   0)  26.35000038
+Results of "2-Fluromethamphethamine.isaq":
+ 6:    1756920 ( -1,   0,   0)  28.50000000
+Results of "2C-B_from-amphethamine.isaq":
+ 9:      14157 (  0,  -4,   0)  26.05500031
+
+With ES:
+
+Results of "2-Chloromphethamine.isaq":
+10:      14398 (  0,  -3,  -1)  78.82400513
+Results of "2-Fluroamphethamine.isaq":
+18:    1771315 ( -1,  -3,  -4)  78.47076416
+Results of "2-Fluromethamphethamine.isaq":
+14:     102607 (  7,   0,  -1)  56.11567307
+Results of "2C-B_from-amphethamine.isaq":
+ 1:          4 (  0,   0,   4)  75.51490021
+

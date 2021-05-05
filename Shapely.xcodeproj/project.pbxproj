@@ -7,30 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1071D84E262F78AE008547DC /* FFTProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1071D84C262F73F0008547DC /* FFTProcess.cpp */; };
+		1071D87B26320D9E008547DC /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1071D87926320D9E008547DC /* grid.cpp */; };
 		107A8C9D25D204600070F7DF /* main_dev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 107A8C9C25D204600070F7DF /* main_dev.cpp */; };
 		107A8CE025D331DF0070F7DF /* coordinates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 107A8CDE25D331DF0070F7DF /* coordinates.cpp */; };
 		10E4CBE925D4910600E50539 /* molecule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10E4CBE725D4910600E50539 /* molecule.cpp */; };
+		10E4CBFD25E5A31900E50539 /* shapely_tester in CopyFiles */ = {isa = PBXBuildFile; fileRef = 10E4CBFC25E5A31900E50539 /* shapely_tester */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		107A8C9125D203F80070F7DF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			buildActionMask = 12;
+			dstPath = "/Users/ivanwelsh/GitHub/shapely-drugs/test";
 			dstSubfolderSpec = 0;
 			files = (
+				10E4CBFD25E5A31900E50539 /* shapely_tester in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1028CCCC26126AA2002433DE /* compressed_bitset.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = compressed_bitset.hpp; sourceTree = "<group>"; };
+		1071D84C262F73F0008547DC /* FFTProcess.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FFTProcess.cpp; sourceTree = "<group>"; };
+		1071D84D262F73F0008547DC /* FFTProcess.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FFTProcess.hpp; sourceTree = "<group>"; };
+		1071D853262FA493008547DC /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
+		1071D87926320D9E008547DC /* grid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
+		1071D87A26320D9E008547DC /* grid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = grid.hpp; sourceTree = "<group>"; };
 		107A8C9325D203F80070F7DF /* shapely_tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shapely_tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		107A8C9C25D204600070F7DF /* main_dev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_dev.cpp; sourceTree = "<group>"; };
 		107A8CDE25D331DF0070F7DF /* coordinates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = coordinates.cpp; sourceTree = "<group>"; };
 		107A8CDF25D331DF0070F7DF /* coordinates.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = coordinates.hpp; sourceTree = "<group>"; };
 		10E4CBE725D4910600E50539 /* molecule.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = molecule.cpp; sourceTree = "<group>"; };
 		10E4CBE825D4910600E50539 /* molecule.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = molecule.hpp; sourceTree = "<group>"; };
+		10E4CBF425DDBADD00E50539 /* shapely_tester */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = shapely_tester; sourceTree = "<group>"; };
+		10E4CBFC25E5A31900E50539 /* shapely_tester */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = shapely_tester; path = "../../Library/Developer/Xcode/DerivedData/Shapely-fxjaiprrkftipfgnghfgjtzubfoj/Build/Products/Release/shapely_tester"; sourceTree = "<group>"; };
+		10E4CC0025EC38B900E50539 /* serialisation.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = serialisation.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +60,8 @@
 		107A8C7A25D1FE1B0070F7DF = {
 			isa = PBXGroup;
 			children = (
+				10E4CBF425DDBADD00E50539 /* shapely_tester */,
+				10E4CBFC25E5A31900E50539 /* shapely_tester */,
 				107A8CA325D205590070F7DF /* include */,
 				107A8CA225D205590070F7DF /* src */,
 				107A8C9B25D204600070F7DF /* test */,
@@ -73,6 +88,10 @@
 		107A8CA225D205590070F7DF /* src */ = {
 			isa = PBXGroup;
 			children = (
+				107A8CDE25D331DF0070F7DF /* coordinates.cpp */,
+				1071D84C262F73F0008547DC /* FFTProcess.cpp */,
+				1071D87926320D9E008547DC /* grid.cpp */,
+				10E4CBE725D4910600E50539 /* molecule.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -88,10 +107,13 @@
 		107A8CA425D205590070F7DF /* Shapely */ = {
 			isa = PBXGroup;
 			children = (
-				107A8CDE25D331DF0070F7DF /* coordinates.cpp */,
+				1028CCCC26126AA2002433DE /* compressed_bitset.hpp */,
 				107A8CDF25D331DF0070F7DF /* coordinates.hpp */,
-				10E4CBE725D4910600E50539 /* molecule.cpp */,
+				1071D84D262F73F0008547DC /* FFTProcess.hpp */,
+				1071D87A26320D9E008547DC /* grid.hpp */,
 				10E4CBE825D4910600E50539 /* molecule.hpp */,
+				10E4CC0025EC38B900E50539 /* serialisation.hpp */,
+				1071D853262FA493008547DC /* utils.hpp */,
 			);
 			path = Shapely;
 			sourceTree = "<group>";
@@ -154,6 +176,8 @@
 			files = (
 				10E4CBE925D4910600E50539 /* molecule.cpp in Sources */,
 				107A8C9D25D204600070F7DF /* main_dev.cpp in Sources */,
+				1071D84E262F78AE008547DC /* FFTProcess.cpp in Sources */,
+				1071D87B26320D9E008547DC /* grid.cpp in Sources */,
 				107A8CE025D331DF0070F7DF /* coordinates.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,7 +241,11 @@
 					$SRCROOT/include,
 					$SRCROOT/external/eigen,
 					$SRCROOT/external/stdx/include,
+					$SRCROOT/external/dynamic_bitset/include,
+					$SRCROOT/external/dynamic_bitset/extlibs/libpopcnt,
+					/usr/local/include,
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -277,7 +305,11 @@
 					$SRCROOT/include,
 					$SRCROOT/external/eigen,
 					$SRCROOT/external/stdx/include,
+					$SRCROOT/external/dynamic_bitset/include,
+					$SRCROOT/external/dynamic_bitset/extlibs/libpopcnt,
+					/usr/local/include,
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -292,6 +324,35 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/include,
+					$SRCROOT/external/eigen,
+					$SRCROOT/external/stdx/include,
+					$SRCROOT/external/dynamic_bitset/include,
+					$SRCROOT/external/dynamic_bitset/extlibs/libpopcnt,
+					$SRCROOT/external/cereal/include,
+					/usr/local/include,
+					/usr/local/include/rdkit,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Xclang",
+					"-fopenmp",
+				);
+				OTHER_LDFLAGS = (
+					"-lomp",
+					"-lRDKitFileParsers",
+					"-lRDKitRDGeneral",
+					"-lRDKitDescriptors",
+					"-lRDKitDistGeomHelpers",
+					"-lRDKitForceField",
+					"-lRDKitForceFieldHelpers",
+					"-lRDKitDistGeometry",
+					"-lRDKitGraphMol",
+					"-lRDKitMolAlign",
+					"-lfftw3f",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -302,6 +363,36 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					$SRCROOT/include,
+					$SRCROOT/external/eigen,
+					$SRCROOT/external/stdx/include,
+					$SRCROOT/external/dynamic_bitset/include,
+					$SRCROOT/external/dynamic_bitset/extlibs/libpopcnt,
+					$SRCROOT/external/cereal/include,
+					/usr/local/include,
+					/usr/local/include/rdkit,
+				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-Xclang",
+					"-fopenmp",
+				);
+				OTHER_LDFLAGS = (
+					"-lomp",
+					"-lRDKitFileParsers",
+					"-lRDKitRDGeneral",
+					"-lRDKitDescriptors",
+					"-lRDKitDistGeomHelpers",
+					"-lRDKitForceField",
+					"-lRDKitForceFieldHelpers",
+					"-lRDKitDistGeometry",
+					"-lRDKitGraphMol",
+					"-lRDKitMolAlign",
+					"-lfftw3f",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
