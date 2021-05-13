@@ -23,8 +23,8 @@ private:
   float grid_spacing; // Distance between grid points in bohr
   
   std::vector<complex> target_dft;
-  float* work_r;
-  complex* work_c;
+  complex* work_i;
+  complex* work_o;
   
   Molecule target;
   std::vector<Molecule> tests;
@@ -62,7 +62,7 @@ private:
   const float delta = 0.f;
   float score = 0.f;
   uint64_t index = 0;
-  uint8_t rotation = 0;
+  uint32_t rotation = 0;
   friend class FFTProcess;
   
 public:
@@ -94,7 +94,7 @@ public:
     return z;
   }
   inline float GetDeltaZ() const { return GetZIndex() * delta; }
-  inline uint32_t GetRotationType() const { return (uint32_t)rotation; }
+  inline uint32_t GetRotationType() const { return rotation; }
   
   inline bool operator<(const Score& b) const { return score < b.score; }
   inline bool operator>(const Score& b) const { return score > b.score; }

@@ -402,12 +402,13 @@ int main_esgrid_test(int argc, const char* argv[]) {
 
 int main_fftw_test(int argc, const char* argv[]) {
   fs::path root_path("/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/ISA_ATOMS");
-  fs::path target_path = root_path / "Methamphetamine.isaq";
+  fs::path target_path = root_path / "Methamphetamine.density";
   std::vector<fs::path> test_paths {
-    root_path / "2-Chloromphethamine.isaq",
-    root_path / "2-Fluroamphethamine.isaq",
-    root_path / "2-Fluromethamphethamine.isaq",
-    root_path / "2C-B_from-amphethamine.isaq"
+    root_path / "2-Chloromphethamine.density",
+    root_path / "2-Fluroamphethamine.density",
+    root_path / "2-Fluromethamphethamine.density",
+    root_path / "2C-B_from-amphethamine.density",
+    root_path / "Methamphetamine.density"
   };
   
   
@@ -420,7 +421,7 @@ int main_fftw_test(int argc, const char* argv[]) {
   
   shapely::FFTProcess runner(target_path, test_paths);
   runner.Initialise();
-  runner.Run(1, results);
+  runner.Run(25, results);
   fs::path target_out = target_path; target_out.replace_extension(".target.xyz");
   {
     std::ofstream os(target_out);
@@ -430,15 +431,15 @@ int main_fftw_test(int argc, const char* argv[]) {
   for (auto& iv : results) {
     std::cout << "Results of " << test_paths[iv.first].filename() << ":\n";
     for (shapely::Score& score : iv.second) {
-      std::cout << std::setw(2) << score.GetRotationType() << ": "
+      std::cout << std::setw(4) << score.GetRotationType() << ": "
                 << std::setw(10) << score.GetRawIndex() << " ("
                 << std::setw(3) << score.GetXIndex() << ", "
                 << std::setw(3) << score.GetYIndex() << ", "
                 << std::setw(3) << score.GetZIndex() << ")  "
-                << std::setprecision(8) << std::fixed << score.GetScore() << std::endl;
+                << std::setprecision(6) << std::fixed << score.GetScore() << std::endl;
       {
         std::stringstream ss;
-        ss << ".test." << score.GetRotationType() << "_es.xyz";
+        ss << ".test." << std::setw(4) << std::setfill('0') << score.GetRotationType() << ".xyz";
         fs::path test_out = test_paths[iv.first];
         test_out.replace_extension(ss.str());
         std::ofstream os(test_out);
@@ -459,8 +460,68 @@ int main_fftw_test(int argc, const char* argv[]) {
   return 0;
 }
 
+int main_fftw_allbyall(int argc, const char* argv[]) {
+  std::ofstream mat_out("/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/10_by_10.mat");
+  std::ofstream raw_out("/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/10_by_10.dat");
+  mat_out.precision(6);
+  
+  fs::path root_path("/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/ISA_ATOMS2");
+  std::vector<fs::path> test_files;
+  for (const fs::directory_entry& possible : fs::directory_iterator(root_path)) {
+    if (possible.path().extension() != ".density") { continue; }
+    stdx::string name = possible.path().stem().native();
+    if (name == "10_41_Lysergic_acid") { continue; }
+    stdx::string start(name.begin(), name.begin() + 3);
+    if (start != "10_") { continue; }
+    test_files.emplace_back(possible.path());
+  }
+  std::sort(test_files.begin(), test_files.end());
+  
+//#pragma omp parallel for
+  for (uint64_t i = 0; i < test_files.size(); ++i) {
+    fs::path p1 = test_files[i];
+    std::cout << "Running target = " << p1.stem() << '\n';
+    raw_out << "Results of " << p1.stem() << ":" << std::endl;
+    std::map<uint32_t, std::vector<shapely::Score>> results;
+    shapely::FFTProcess runner(p1, test_files);
+    runner.Initialise();
+    runner.Run(1, results);
+    
+    std::stringstream ss;
+    ss << "/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/TestOverlays/" << p1.stem().native() << ".target.xyz";
+    std::ofstream target_out(ss.str());
+    runner.PrintTargetXYZ(target_out);
+    target_out.close();
+    
+    for (auto& iv : results) {
+      shapely::Score& score = iv.second.front();
+      raw_out << std::setw(4) << score.GetRotationType() << ": "
+              << std::setw(10) << score.GetRawIndex() << " ("
+              << std::setw(3) << score.GetXIndex() << ", "
+              << std::setw(3) << score.GetYIndex() << ", "
+              << std::setw(3) << score.GetZIndex() << ")  "
+              << std::setprecision(6) << std::fixed << score.GetScore()
+              << " : " << test_files[iv.first].stem() << std::endl;
+      mat_out << std::setw(10) << score.GetScore();
+      ss.str("");
+      ss << "/Users/ivanwelsh/GitHub/shapely-drugs/data/ESR_DRUGS/TestOverlays/";
+      ss << p1.stem().native() << ".test." << test_files[iv.first].stem().native() << "." << std::setw(2) << std::setfill('0') << score.GetRotationType() << ".xyz";
+      std::ofstream test_out(ss.str());
+      runner.PrintScoredTestXYZ(test_out, iv.first, score);
+      test_out.close();
+    }
+    
+    mat_out << "  " << p1.stem() << std::endl;
+    
+  }
+  
+  
+  return 0;
+}
+
 int main(int argc, const char * argv[]) {
-  return main_esgrid_test(argc, argv);
+  return main_fftw_allbyall(argc, argv);
+//  return main_esgrid_test(argc, argv);
 // return file_check_main(argc, argv); 
 //  return main_rdkittest(argc, argv);
   
@@ -473,5 +534,6 @@ int main(int argc, const char * argv[]) {
 //  prep_main(argc, argv);
 //  return scoring_main(argc, argv);
 }
+
 
 

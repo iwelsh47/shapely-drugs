@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1071D84E262F78AE008547DC /* FFTProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1071D84C262F73F0008547DC /* FFTProcess.cpp */; };
 		1071D87B26320D9E008547DC /* grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1071D87926320D9E008547DC /* grid.cpp */; };
+		1071D8A726449975008547DC /* cubic_spline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1071D8A526449975008547DC /* cubic_spline.cpp */; };
 		107A8C9D25D204600070F7DF /* main_dev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 107A8C9C25D204600070F7DF /* main_dev.cpp */; };
 		107A8CE025D331DF0070F7DF /* coordinates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 107A8CDE25D331DF0070F7DF /* coordinates.cpp */; };
 		10E4CBE925D4910600E50539 /* molecule.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10E4CBE725D4910600E50539 /* molecule.cpp */; };
@@ -35,6 +36,8 @@
 		1071D853262FA493008547DC /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
 		1071D87926320D9E008547DC /* grid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = grid.cpp; sourceTree = "<group>"; };
 		1071D87A26320D9E008547DC /* grid.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = grid.hpp; sourceTree = "<group>"; };
+		1071D8A526449975008547DC /* cubic_spline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cubic_spline.cpp; sourceTree = "<group>"; };
+		1071D8A626449975008547DC /* cubic_spline.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cubic_spline.hpp; sourceTree = "<group>"; };
 		107A8C9325D203F80070F7DF /* shapely_tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = shapely_tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		107A8C9C25D204600070F7DF /* main_dev.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_dev.cpp; sourceTree = "<group>"; };
 		107A8CDE25D331DF0070F7DF /* coordinates.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = coordinates.cpp; sourceTree = "<group>"; };
@@ -89,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				107A8CDE25D331DF0070F7DF /* coordinates.cpp */,
+				1071D8A526449975008547DC /* cubic_spline.cpp */,
 				1071D84C262F73F0008547DC /* FFTProcess.cpp */,
 				1071D87926320D9E008547DC /* grid.cpp */,
 				10E4CBE725D4910600E50539 /* molecule.cpp */,
@@ -109,6 +113,7 @@
 			children = (
 				1028CCCC26126AA2002433DE /* compressed_bitset.hpp */,
 				107A8CDF25D331DF0070F7DF /* coordinates.hpp */,
+				1071D8A626449975008547DC /* cubic_spline.hpp */,
 				1071D84D262F73F0008547DC /* FFTProcess.hpp */,
 				1071D87A26320D9E008547DC /* grid.hpp */,
 				10E4CBE825D4910600E50539 /* molecule.hpp */,
@@ -175,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10E4CBE925D4910600E50539 /* molecule.cpp in Sources */,
+				1071D8A726449975008547DC /* cubic_spline.cpp in Sources */,
 				107A8C9D25D204600070F7DF /* main_dev.cpp in Sources */,
 				1071D84E262F78AE008547DC /* FFTProcess.cpp in Sources */,
 				1071D87B26320D9E008547DC /* grid.cpp in Sources */,

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <filesystem>
 
+#include <Shapely/cubic_spline.hpp>
 #include <Shapely/molecule.hpp>
 #include <Shapely/serialisation.hpp>
 
@@ -75,13 +76,26 @@ void Molecule::LoadFile(const fs::path &filename) {
     elements.push_back(components[0].substr(0, counts));
   }
   
+  covalent_radii.reserve(radii.size());
+  for (uint32_t a = 0; a < radii.size(); ++a) {
+    Eigen::RowVector3f pt = atoms[a];
+    float rmax2 = std::numeric_limits<float>::max();
+    for (uint32_t b = 0; b < radii.size(); ++b) {
+      if (a == b) { continue; }
+      float dist = (atoms[b] - pt).squaredNorm();
+      if (dist < rmax2) { rmax2 = dist; }
+    }
+    covalent_radii.push_back(std::sqrt(rmax2) / 2);
+  }
+  
   // Correctly lineup the atoms
   // Cube the radii for weighting things
   std::vector<float> r3 = radii;
   for (float& r : r3) { r *= r * r; }
   
-  CentreInplace(atoms, r3.data());
-  RotateInplace(atoms, PrincipalAxesAlignment(atoms, r3.data()));
+  CentreInplace(atoms);
+//  CentreInplace(atoms, r3.data());
+//  RotateInplace(atoms, PrincipalAxesAlignment(atoms, r3.data()));
   
   name = filename.stem();
 }
@@ -93,13 +107,13 @@ void Molecule::LoadBinaryFile(const fs::path &filename) {
   }
   
   std::vector<AtomSerialData> atom_data;
+  std::vector<std::pair<std::vector<float>, std::vector<float>>> raw_densities;
   {
     char throwaway_byte;
     using Loader = cereal::BinaryInputArchive;
     std::ifstream is(filename, std::ios::binary);
     Loader load(is);
-    load(throwaway_byte, atom_data);
-    load(grid.delta, grid.origin, grid.spacing, grid.data);
+    load(throwaway_byte, atom_data, raw_densities);
   }
   
   // Generate the molecule from the atom data
@@ -109,6 +123,40 @@ void Molecule::LoadBinaryFile(const fs::path &filename) {
     radii.push_back(atom.radius);
     elements.push_back(ElementSymbols[atom.element]);
   }
+  
+  densities.reserve(raw_densities.size());
+  uint32_t idx = 0;
+  for (auto& density : raw_densities) {
+    float scale = partial_charges[idx] / atom_data[idx].element;
+    for (float& v : density.second) { v *= scale; }
+    densities.emplace_back(density.first, density.second);
+    ++idx;
+  }
+  
+  // Correctly lineup the atoms
+  // Cube the radii for weighting things
+  std::vector<float> r3 = radii;
+  for (float& r : r3) { r *= r * r; }
+  
+  covalent_radii.reserve(radii.size());
+  max_dist = 0.f;
+  for (uint32_t a = 0; a < radii.size(); ++a) {
+    Eigen::RowVector3f pt = atoms[a];
+    float rmax2 = std::numeric_limits<float>::max();
+    for (uint32_t b = 0; b < radii.size(); ++b) {
+      if (a == b) { continue; }
+      float dist = (atoms[b] - pt).squaredNorm();
+      if (dist < rmax2) { rmax2 = dist; }
+      dist = std::sqrt(dist) + 1.5f * radii[a] + 1.5f * radii[b];
+      if (dist > max_dist) { max_dist = dist; }
+    }
+    covalent_radii.push_back(std::sqrt(rmax2) / 2);
+  }
+  
+  CentreInplace(atoms);
+  RotateInplace(atoms, PrincipalAxesAlignment(atoms));
+//  CentreInplace(atoms, r3.data());
+//  RotateInplace(atoms, PrincipalAxesAlignment(atoms, r3.data()));
   
   name = filename.stem();
 }

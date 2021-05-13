@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Shapely/coordinates.hpp>
+#include <Shapely/cubic_spline.hpp>
 #include <Shapely/serialisation.hpp>
 #include <vector>
 #include <stdx/string.hpp>
@@ -9,17 +10,6 @@
 namespace fs = std::filesystem;
 
 namespace shapely {
-
-class PrecalculatedGrid {
-public:
-  
-  std::array<float, 3> origin;
-  std::array<uint64_t, 3> delta;
-  float spacing;
-  std::vector<float> data;
-  
-  bool empty() const { return data.empty(); }
-};
 
 class Molecule {
 public:
@@ -54,9 +44,10 @@ public:
 public:
   stdx::string name;
   Cartesian atoms;
-  std::vector<float> partial_charges, radii;
+  std::vector<float> partial_charges, radii, covalent_radii;
   std::vector<stdx::string> elements;
-  PrecalculatedGrid grid;
+  std::vector<CubicSpline> densities;
+  float max_dist;
 };
 
 }

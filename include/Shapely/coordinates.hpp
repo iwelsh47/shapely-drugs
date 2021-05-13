@@ -134,6 +134,13 @@ Cartesian Rotate(const Cartesian& pts, const Eigen::Matrix3f& rotmat);
 Eigen::Matrix3f PrincipalAxesAlignment(const Cartesian& pts, const float* weights = nullptr);
 /** Calculate the rotation matrix given an axis and rotation angle. Angle in radians*/
 Eigen::Matrix3f RotationMatrix(const Eigen::Vector3f& axis, float angle);
+enum class RotType { ZXZ };
+inline Eigen::Matrix3f TripleRotationMatrix(float axis1, float axis2, float axis3) {
+  const Eigen::Vector3f x_axis(1.f, 0.f, 0.f);
+  const Eigen::Vector3f y_axis(0.f, 1.f, 0.f);
+  const Eigen::Vector3f z_axis(0.f, 0.f, 1.f);
+  return RotationMatrix(z_axis, axis1) * RotationMatrix(x_axis, axis2) * RotationMatrix(z_axis, axis3);
+}
 
 struct CartesianLimits {
   float min_x, min_y, min_z, max_x, max_y, max_z;
